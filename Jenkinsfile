@@ -18,8 +18,9 @@ pipeline {
 
         stage('Deploy to Kubernetes') {
             steps {
-                    withCredentials([file(credentialsId: 'minikube-kubeconfig-file', variable: 'KUBECONFIG')]) {
-                    sh 'kubectl apply -f k8s/deployment.yaml'
+                    bat '''
+                        kubectl apply -f k8s/deployment.yaml
+                    '''
                 }
             }
         }
