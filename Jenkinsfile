@@ -16,6 +16,17 @@ pipeline {
             }
         }
 
+        stage('Push Docker Image') {
+            steps {
+                script {
+                        dockerImage.push()
+                }
+            }
+        }
+
+
+
+        
         stage('Deploy to Kubernetes') {
             steps {
                     withCredentials([file(credentialsId: 'minikube-kubeconfig-file', variable: 'KUBECONFIG')]) {
