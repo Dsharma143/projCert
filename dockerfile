@@ -18,4 +18,4 @@
 #CMD ["npm", "start"]
 #
 FROM httpd:latest
-COPY ./website/ /usr/local/apache2/htdocs/
+COPY https://github.com/edurekacontent/dockerContent.git /usr/local/apache2/htdocs/
