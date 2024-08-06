@@ -11,7 +11,7 @@ pipeline {
         stage('Build Docker Image') {
             steps {
                 script {
-                    dockerImage = docker.build("deepaksharma143/projCert:${env.BUILD_ID}")
+                    dockerImage = docker.build("deepaksharma143/projcert:${env.BUILD_ID}")
                 }
             }
         }
