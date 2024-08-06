@@ -14,6 +14,6 @@ spec:
     spec:
       containers:
         - name: projcert
-          image: deepaksharma143/projCert:latest
+          image: deepaksharma143/projcert:latest
           ports:
             - containerPort: 3000
