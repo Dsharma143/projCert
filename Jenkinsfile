@@ -22,7 +22,8 @@ pipeline {
                     bat '''
                         kubectl --kubeconfig=%KUBECONFIG% config set-context minikube
                         kubectl --kubeconfig=%KUBECONFIG% apply -f k8s/deployment.yaml --validate=false
-                    '''   
+                    '''
+                    }
                 }
             }
         }
