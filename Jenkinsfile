@@ -31,9 +31,8 @@ pipeline {
             steps {
                     withCredentials([file(credentialsId: 'minikube-kubeconfig-file', variable: 'KUBECONFIG')]) {
                     bat '''
-                        kubectl --kubeconfig=%KUBECONFIG% config set-context minikube
-                        kubectl --kubeconfig=%KUBECONFIG% apply -f k8/deployment.yaml --validate=false
-                        kubectl --kubeconfig=%KUBECONFIG% apply -f k8/service.yaml --validate=false
+                        kubectl apply -f k8/deployment.yaml --validate=false
+                        kubectl apply -f k8/service.yaml --validate=false
                     '''
                     }
                 }
