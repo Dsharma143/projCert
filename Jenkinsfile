@@ -29,15 +29,13 @@ pipeline {
             }
         }
 
-        stage('Run Ansible Playbook in Docker') {
+        stage('Run Ansible Playbook') {
             steps {
                 script {
-                    // Running Ansible Playbook in an Ansible Docker Container
-                    docker.image('willhallonline/ansible:latest').inside {
-                        sh '''
-                            ansible-playbook -i ${ANSIBLE_HOST}, -u ec2-user deploy.yml --extra-vars "docker_image=${DOCKER_IMAGE}"
-                        '''
-                    }
+                    // Running Ansible Playbook directly on the EC2 instance
+                    sh '''
+                        ansible-playbook -i ${ANSIBLE_HOST}, -u ec2-user deploy.yml --extra-vars "docker_image=${DOCKER_IMAGE}"
+                    '''
                 }
             }
         }
