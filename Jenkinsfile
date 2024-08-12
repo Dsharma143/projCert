@@ -4,6 +4,8 @@ pipeline {
     environment {
         ANSIBLE_HOST = "52.91.26.180" // AWS EC2 instance
         DOCKER_IMAGE = "deepaksharma143/projcert:latest"
+        DOCKERHUB_USERNAME = "deepaksharma143"
+        DOCKERHUB_PASSWORD = "Shiv@1431"
     }
 
     stages {
@@ -24,6 +26,7 @@ pipeline {
         stage('Push Docker Image') {
             steps {
                 script {
+                    sh 'echo "$DOCKERHUB_PASSWORD" | docker login -u "$DOCKERHUB_USERNAME" --password-stdin'
                     dockerImage.push()
                 }
             }
