@@ -1,16 +1,7 @@
 ---
-- hosts: all
-  become: yes
+- hosts: localhost
+  connection: local
   tasks:
-    - name: Pull Docker image
-      docker_image:
-        name: "{{ docker_image }}"
-        source: pull
-
-    - name: Run Docker container
-      docker_container:
-        name: my_container
-        image: "{{ docker_image }}"
-        state: started
-        ports:
-          - "80:80"
+    - name: Example task
+      shell: echo "Deploying on local machine with Docker image {{ docker_image }}"
+      # Add your deployment tasks here
