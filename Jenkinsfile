@@ -37,7 +37,7 @@ pipeline {
                 script {
                     // Running Ansible Playbook directly on the EC2 instance
                     sh '''
-                        ansible-playbook -i ${ANSIBLE_HOST}, -u ec2-user deploy.yml --extra-vars "docker_image=${DOCKER_IMAGE}"
+                         ansible-playbook -i localhost, -c local deploy.yml --extra-vars "docker_image=${DOCKER_IMAGE}"
                     '''
                 }
             }
