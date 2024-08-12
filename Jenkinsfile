@@ -1,6 +1,11 @@
 pipeline {
     agent any
 
+    environment {
+        ANSIBLE_HOST = "52.91.26.180" // AWS EC2 instance
+        DOCKER_IMAGE = "deepaksharma143/projcert:latest"
+    }
+
     stages {
         stage('Checkout') {
             steps {
@@ -11,7 +16,7 @@ pipeline {
         stage('Build Docker Image') {
             steps {
                 script {
-                    dockerImage = docker.build("deepaksharma143/projcert:latest")
+                    dockerImage = docker.build("${DOCKER_IMAGE}")
                 }
             }
         }
@@ -19,25 +24,24 @@ pipeline {
         stage('Push Docker Image') {
             steps {
                 script {
-                        dockerImage.push()
+                    dockerImage.push()
                 }
             }
         }
 
-
-
-        
-        stage('Deploy to Kubernetes') {
+        stage('Run Ansible Playbook in Docker') {
             steps {
-                    withCredentials([file(credentialsId: 'minikube-kubeconfig-file', variable: 'KUBECONFIG')]) {
-                    bat '''
-                        kubectl apply -f k8/deployment.yaml --validate=false
-                        kubectl apply -f k8/service.yaml --validate=false
-                    '''
+                script {
+                    // Running Ansible Playbook in an Ansible Docker Container
+                    docker.image('willhallonline/ansible:latest').inside {
+                        sh '''
+                            ansible-playbook -i ${ANSIBLE_HOST}, -u ec2-user deploy.yml --extra-vars "docker_image=${DOCKER_IMAGE}"
+                        '''
                     }
                 }
             }
         }
+    }
 
     post {
         always {
