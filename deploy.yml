@@ -1,0 +1,16 @@
+---
+- hosts: all
+  become: yes
+  tasks:
+    - name: Pull Docker image
+      docker_image:
+        name: "{{ docker_image }}"
+        source: pull
+
+    - name: Run Docker container
+      docker_container:
+        name: my_container
+        image: "{{ docker_image }}"
+        state: started
+        ports:
+          - "80:80"
