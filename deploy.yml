@@ -1,7 +1,37 @@
 ---
-- hosts: localhost
-  connection: local
+- name: Deploy Docker Container on Ansible Master Node
+  hosts: localhost
+  become: yes
+  vars:
+    docker_image: "deepaksharma143/projcert:latest"
+    container_name: "php_app_container"
+    container_port: 80
+    host_port: 32001
+
   tasks:
-    - name: Example task
-      shell: echo "Deploying on local machine with Docker image {{ docker_image }}"
-      # Add your deployment tasks here
+    - name: Install Docker
+      apt:
+        name: docker.io
+        state: present
+        update_cache: yes
+      when: ansible_os_family == "Debian"
+
+    - name: Ensure Docker service is running
+      service:
+        name: docker
+        state: started
+        enabled: yes
+
+    - name: Pull Docker image from Docker Hub
+      docker_image:
+        name: "{{ docker_image }}"
+        source: pull
+
+    - name: Run Docker container
+      docker_container:
+        name: "{{ container_name }}"
+        image: "{{ docker_image }}"
+        state: started
+        ports:
+          - "{{ host_port }}:{{ container_port }}"
+        restart_policy: always
